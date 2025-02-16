@@ -30,11 +30,17 @@ contract SimpleStorage{
 
     Person[] public listOfPeoples; // holds null as a default value and also this array is a dynamic array
 
-    function addPerson(uint256 _favouriteNumber,string memory _name) public {
+    // Mapping 
+    mapping (string => uint256) public nameToFavoriteNumber;
+
+    function addPerson(string memory _name, uint256 _favouriteNumber) public {
         listOfPeoples.push( Person(_favouriteNumber,_name));
+        nameToFavoriteNumber[_name] = _favouriteNumber;
     }
     // Person public sam = Person(99,"sam");
     // Person public noah = Person(65, "noah");
     // Person public ryuk = Person({favouriteNumber: 32, name : "ryuk"});
     // Person public mykex = Person({favouriteNumber: 7, name : "mykex"});
+
+    
 }
