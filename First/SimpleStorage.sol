@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.18;
+pragma solidity ^0.8.18 ;
 
 contract SimpleStorage{
 
@@ -41,6 +41,9 @@ contract SimpleStorage{
     // Person public noah = Person(65, "noah");
     // Person public ryuk = Person({favouriteNumber: 32, name : "ryuk"});
     // Person public mykex = Person({favouriteNumber: 7, name : "mykex"});
-// next is deployment on ZKSYNC SEPOLIA TESTNET
+
     
 }
+
+contract SimpleStorage_2{}
+contract SimpleStorage_3{}
