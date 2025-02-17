@@ -41,6 +41,6 @@ contract SimpleStorage{
     // Person public noah = Person(65, "noah");
     // Person public ryuk = Person({favouriteNumber: 32, name : "ryuk"});
     // Person public mykex = Person({favouriteNumber: 7, name : "mykex"});
-
+// next is deployment on ZKSYNC SEPOLIA TESTNET
     
 }
