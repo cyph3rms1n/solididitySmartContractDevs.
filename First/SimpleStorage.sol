@@ -7,7 +7,7 @@ contract SimpleStorage{
     uint256  myFavoriteNumber; // uint256 variable type
 
     // creating a fuction which take a parameter uint256 and set the value of the variable "favoriteNumber"
-    function store(uint256 _favoriteNumber) public {
+    function store(uint256 _favoriteNumber) public virtual { // Virtual defines that the function can be override
         myFavoriteNumber = _favoriteNumber;
     }
     // View and Pure
