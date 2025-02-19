@@ -18,6 +18,7 @@ contract fundMe {
             * Minimum amount should be 5 USD
         */
 
-        require(msg.value >= minimumUsd, " not enough balance");
+        require(msg.value >= minimumUsd, " not enough balance"); // Like an if - else operation
+        // revert: undo the prior operation if the transection fails (condition didn't meet) and returns the remaining gas fees.
     }
 }
