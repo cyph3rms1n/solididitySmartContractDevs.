@@ -12,7 +12,7 @@ import {PriceConverter} from "./PriceConverter.sol";
 
 contract fundMe {
     using PriceConverter for uint256;
-    uint256 public  minimumUsd = 5e18; // 5e18 = 5 * 1e18 
+    uint256 public constant MINIMUM_USD = 5e18; // 5e18 = 5 * 1e18 
 
     address[] public funders; // list of Funders address
     mapping (address funders => uint256 amountFunded) public addressToAmountFunded;
@@ -33,7 +33,7 @@ contract fundMe {
         */
 
         // Conversion of msg.value (in Wei) to USD using getConversionRate() function.
-        require(msg.value.getConversionRate() >= minimumUsd, "didn't send enough ETH"); // Like an if - else operation
+        require(msg.value.getConversionRate() >= MINIMUM_USD, "didn't send enough ETH"); // Like an if - else operation
         // revert: undo the prior operation if the transection fails (condition didn't meet) and returns the remaining gas fees.
         funders.push(msg.sender);
         // Keeps the track of funders who funds this contract.
