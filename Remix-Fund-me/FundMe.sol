@@ -8,6 +8,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
+import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 import {PriceConverter} from "./PriceConverter.sol";
 
 // Custom Error
@@ -15,13 +16,13 @@ error NotOwner();
 
 contract fundMe {
     using PriceConverter for uint256;
-    uint256 public constant MINIMUM_USD = 5e18; // 5e18 = 5 * 1e18 
-
-    address[] public funders; // list of Funders address
+    
     mapping (address funders => uint256 amountFunded) public addressToAmountFunded;
-
+    address[] public funders; // list of Funders address
+    
     // The one who deploy this cotract is the owner.
-    address public immutable i_owner;
+    address public i_owner;
+    uint256 public constant MINIMUM_USD = 5e18; // 5e18 = 5 * 1e18 
     /* 
         If we declare the owner address as immutable in a Solidity contract,
         we will not be able to transfer ownership to another address after the contract has been deployed.
@@ -43,9 +44,10 @@ contract fundMe {
         // Conversion of msg.value (in Wei) to USD using getConversionRate() function.
         require(msg.value.getConversionRate() >= MINIMUM_USD, "didn't send enough ETH"); // Like an if - else operation
         // revert: undo the prior operation if the transection fails (condition didn't meet) and returns the remaining gas fees.
-        funders.push(msg.sender);
         // Keeps the track of funders who funds this contract.
         addressToAmountFunded[msg.sender] +=  msg.value;
+        funders.push(msg.sender);
+        
     }
 
     function withdraw() public onlyOwner {
@@ -77,6 +79,10 @@ contract fundMe {
         (bool callSuccess,) = payable(msg.sender).call{value:address(this).balance}("");
         require(callSuccess, "Transection Failed");
 
+    }
+
+    function getVersion() internal  view returns (uint256) {
+        return AggregatorV3Interface(0x694AA1769357215DE4FAC081bf1f309aDC325306).version();
     }
 
     // Special functions that modify the behavior of other functions.
