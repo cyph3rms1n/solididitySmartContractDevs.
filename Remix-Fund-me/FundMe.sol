@@ -12,10 +12,18 @@ import {PriceConverter} from "./PriceConverter.sol";
 
 contract fundMe {
     using PriceConverter for uint256;
-    uint256 minimumUsd = 5e18; // 5e18 = 5 * 1e18 
+    uint256 public  minimumUsd = 5e18; // 5e18 = 5 * 1e18 
 
     address[] public funders; // list of Funders address
     mapping (address funders => uint256 amountFunded) public addressToAmountFunded;
+
+    // The onw who deploy this cotract is the owner.
+    address public Owner;
+
+    // Constructor executes automatically when the contract is depolyed.
+    constructor() {
+        Owner = msg.sender;
+    }
     
     function fund() public  payable {
         // Functionality of this function
@@ -32,14 +40,43 @@ contract fundMe {
         addressToAmountFunded[msg.sender] +=  msg.value;
     }
 
-    function withdraw() public {
+    function withdraw() public onlyOwner {
+        
         // Using for loop to reset the funded amount after the withdraw function executes
-
         for(uint256 funderIndex = 0; funderIndex < funders.length; funderIndex ++){
             address funder = funders[funderIndex];
             addressToAmountFunded[funder] = 0;
         }
+        // Reseting the array
+        funders = new address[] (0);
+
+        // Actually withdrawing teh funds
+        /*
+            There are three ways to withdraw the funds.
+            1. transfer
+            2. send
+            3. call
+        */
+
+        // // transfer (2300 gas, throws error)
+        // payable(msg.sender).transfer(address(this).balance); // msg.sender = address and payable(msg.sender) = payable adress
+
+        // // send (2300 gas, returns bool)
+        // bool sendSuccess = payable(msg.sender).send(address(this).balance);
+        // require(sendSuccess, "Transection Failed");
+
+        // call (forward all gas or set gas, returns bool)
+        (bool callSuccess,) = payable(msg.sender).call{value:address(this).balance}("");
+        require(callSuccess, "Transection Failed");
+
     }
+
+    // Special functions that modify the behavior of other functions.
+    modifier onlyOwner() {
+        require(msg.sender == Owner, "You are not the owner"); // It will check wheter the person calling the function is owner or not.
+        _; // " _; " helps you do other work in the function
+    }
+   
 
    
 }
