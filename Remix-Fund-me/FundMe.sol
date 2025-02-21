@@ -17,12 +17,17 @@ contract fundMe {
     address[] public funders; // list of Funders address
     mapping (address funders => uint256 amountFunded) public addressToAmountFunded;
 
-    // The onw who deploy this cotract is the owner.
-    address public Owner;
+    // The one who deploy this cotract is the owner.
+    address public immutable i_owner;
+    /* 
+        If we declare the owner address as immutable in a Solidity contract,
+        we will not be able to transfer ownership to another address after the contract has been deployed.
+    */
 
+    
     // Constructor executes automatically when the contract is depolyed.
     constructor() {
-        Owner = msg.sender;
+        i_owner = msg.sender;
     }
     
     function fund() public  payable {
@@ -73,7 +78,7 @@ contract fundMe {
 
     // Special functions that modify the behavior of other functions.
     modifier onlyOwner() {
-        require(msg.sender == Owner, "You are not the owner"); // It will check wheter the person calling the function is owner or not.
+        require(msg.sender == i_owner, "You are not the owner"); // It will check wheter the person calling the function is owner or not.
         _; // " _; " helps you do other work in the function
     }
    
