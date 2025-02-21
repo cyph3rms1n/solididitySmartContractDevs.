@@ -10,6 +10,9 @@ pragma solidity ^0.8.18;
 
 import {PriceConverter} from "./PriceConverter.sol";
 
+// Custom Error
+error NotOwner();
+
 contract fundMe {
     using PriceConverter for uint256;
     uint256 public constant MINIMUM_USD = 5e18; // 5e18 = 5 * 1e18 
@@ -24,7 +27,7 @@ contract fundMe {
         we will not be able to transfer ownership to another address after the contract has been deployed.
     */
 
-    
+
     // Constructor executes automatically when the contract is depolyed.
     constructor() {
         i_owner = msg.sender;
@@ -82,6 +85,13 @@ contract fundMe {
         _; // " _; " helps you do other work in the function
     }
    
+    // What happens if someone sends this contract ETH withouth calling the fund function.
+    
+    receive() external payable { 
+        fund();
+    }
 
-   
+    fallback() external payable { 
+        fund();
+    }
 }
