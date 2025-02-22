@@ -17,6 +17,7 @@ contract FallbackExample {
     }
 }
 
+
 //      solidity-by-example.org/fallback/
 //      Ether is sent to contract
 //
